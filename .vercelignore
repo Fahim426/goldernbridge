@@ -1,0 +1,15 @@
+GB Assets
+Golden Bridge
+reference-assets
+.local
+.env*
+!.env.example
+tmp
+test-results
+playwright-report
+docs/screenshots
+liora-connect-assessment.zip
+liora-connect-phase2.zip
+liora-connect-cinematic.zip
+node_modules
+.next

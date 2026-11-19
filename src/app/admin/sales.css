@@ -1,0 +1,19 @@
+.sales-toolbar,.sales-toolbar nav,.contact-tools,.follow-dates {display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.sales-toolbar {justify-content:space-between;margin:-.4rem 0 1.2rem;color:#46574e}
+.sales-toolbar nav {gap:0;border:1px solid #c8d0c5;border-radius:5px;overflow:hidden}
+.sales-toolbar nav a {padding:.65rem .9rem}.sales-toolbar [aria-current=page]{background:#284339;color:white}
+.staff .sales-metrics {grid-template-columns:repeat(6,minmax(0,1fr))}
+.attention {margin-bottom:1.1rem}.attention>a {display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.75rem 1.35rem;border-top:1px solid #e1e5de}
+.attention>a span,.attention .staff-box-head span {font-size:.87rem;color:#475b50}
+.attention>a [data-reason=Overdue]{color:#903d23}
+.attention>p,.schedule-summary {padding:1rem 1.25rem}
+.chart-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-bottom:1.1rem}
+.sales-chart {padding:1.25rem;max-height:25rem;overflow:auto}.sales-chart h2 {font-size:1.2rem;margin-bottom:.9rem}
+.chart-row {display:grid;grid-template-columns:1fr auto;gap:.2rem .55rem;margin-bottom:.75rem;font-size:.95rem;overflow-wrap:anywhere}
+.chart-row>div {grid-column:1/-1;background:#edf0eb;height:5px;border-radius:3px}.chart-row i {display:block;background:#577967;height:100%}
+.schedule-summary {background:#eef2eb;margin:.8rem 0;overflow-wrap:anywhere}
+.follow-form {gap:.45rem}.follow-dates label {flex:1 1 8rem}.follow-dates input {display:block;width:100%}
+.follow-form textarea {border:1px solid #9fac9e;padding:.6rem;border-radius:4px}.contact-tools {margin:1rem 0}
+.staff-history li p,.staff-detail-box small {overflow-wrap:anywhere}
+@media(max-width:1080px){.staff .sales-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}.chart-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.staff .sales-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.chart-grid{grid-template-columns:1fr}.sales-toolbar{align-items:flex-start}.attention>a{padding:.7rem 1rem}}

@@ -1,0 +1,19 @@
+@import "tailwindcss" source(none);
+@source "./";
+@source "../components";
+@font-face {
+  font-family: "Source Sans 3";
+  src: url("/fonts/source-sans-3.woff2") format("woff2");
+  font-weight: 200 900;
+  font-display: swap;
+}
+:root { color-scheme: light; }
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; font-family: "Source Sans 3", "Segoe UI", Arial, sans-serif; color: #223832; background: #faf9f5; }
+button, input, textarea, select { font: inherit; }
+button:not(:disabled), select, summary { cursor: pointer; }
+:focus-visible { outline: 3px solid #9b622b; outline-offset: 4px; }
+html { scroll-padding-top: 6rem; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

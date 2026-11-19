@@ -1,0 +1,28 @@
+node_modules/
+.next/
+out/
+dist/
+coverage/
+.env*
+!.env.example
+.local/
+tmp/
+*.tsbuildinfo
+*.log
+*.sql.gz
+*.dump
+*.pem
+*.key
+*.pfx
+*.sql
+!prisma/migrations/**/migration.sql
+.vercel/
+playwright-report/
+test-results/
+/src/generated/
+/GB Assets/
+/Golden Bridge/
+/reference-assets/
+/liora-connect-assessment.zip
+/liora-connect-phase2.zip
+/liora-connect-cinematic.zip

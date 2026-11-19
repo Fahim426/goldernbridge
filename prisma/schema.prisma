@@ -1,0 +1,139 @@
+generator client {
+  provider               = "prisma-client"
+  output                 = "../src/generated/prisma"
+  moduleFormat           = "esm"
+  importFileExtension    = "ts"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum ProjectStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum UnitType {
+  ONE_BED
+  TWO_BED
+  THREE_BED
+  FOUR_BED
+  UNDECIDED
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  CLOSED
+}
+
+enum AdminRole {
+  ADMIN
+}
+
+model Project {
+  id        String        @id @default(uuid()) @db.Char(36)
+  slug      String        @unique @db.VarChar(80)
+  name      String        @db.VarChar(120)
+  status    ProjectStatus @default(ACTIVE)
+  createdAt DateTime      @default(now()) @db.DateTime(3)
+  updatedAt DateTime      @updatedAt @db.DateTime(3)
+  leads     Lead[]
+}
+
+model Lead {
+  id                 String         @id @default(uuid()) @db.Char(36)
+  projectId          String         @db.Char(36)
+  project            Project        @relation(fields: [projectId], references: [id], onDelete: Restrict)
+  fullName           String         @db.VarChar(120)
+  email              String         @db.VarChar(254)
+  phone              String         @db.VarChar(16)
+  interestedUnitType UnitType
+  message            String?        @db.Text
+  status             LeadStatus     @default(NEW)
+  leadSource         String         @db.VarChar(80)
+  utmSource          String?        @db.VarChar(128)
+  utmMedium          String?        @db.VarChar(128)
+  utmCampaign        String?        @db.VarChar(128)
+  contactConsentAt   DateTime       @db.DateTime(3)
+  marketingConsentAt DateTime?      @db.DateTime(3)
+  idempotencyKey     String         @unique @db.Char(36)
+  requestDigest      String         @db.Char(64)
+  version            Int            @default(1)
+  createdAt          DateTime       @default(now()) @db.DateTime(3)
+  updatedAt          DateTime       @updatedAt @db.DateTime(3)
+  activities         LeadActivity[]
+  followUp           FollowUp?
+
+  @@index([projectId, createdAt])
+  @@index([status, createdAt])
+  @@index([createdAt, id])
+  @@index([email])
+}
+
+model AdminUser {
+  id           String         @id @default(uuid()) @db.Char(36)
+  name         String         @db.VarChar(120)
+  email        String         @unique @db.VarChar(254)
+  passwordHash String         @db.VarChar(72)
+  role         AdminRole      @default(ADMIN)
+  createdAt    DateTime       @default(now()) @db.DateTime(3)
+  updatedAt    DateTime       @updatedAt @db.DateTime(3)
+  activities   LeadActivity[]
+  sessions     AdminSession[]
+}
+
+model AdminSession {
+  id        String    @id @default(uuid()) @db.Char(36)
+  adminId   String    @db.Char(36)
+  admin     AdminUser @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  expiresAt DateTime  @db.DateTime(3)
+
+  @@index([expiresAt])
+}
+
+model LeadActivity {
+  id             String     @id @default(uuid()) @db.Char(36)
+  leadId         String     @db.Char(36)
+  lead           Lead       @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  actorId        String     @db.Char(36)
+  actor          AdminUser  @relation(fields: [actorId], references: [id], onDelete: Restrict)
+  previousStatus LeadStatus?
+  newStatus      LeadStatus?
+  action         ActivityKind @default(STATUS)
+  details        String? @db.Text
+  createdAt      DateTime   @default(now()) @db.DateTime(3)
+
+  @@index([leadId, createdAt])
+}
+
+model RateBucket {
+  key       String   @id @db.Char(64)
+  hits      Int
+  expiresAt DateTime @db.DateTime(3)
+
+  @@index([expiresAt])
+}
+
+enum ActivityKind {
+  STATUS
+  SCHEDULE
+  RESCHEDULE
+  COMPLETE
+  CONTACT
+  NOTE
+}
+
+model FollowUp {
+  leadId      String @id @db.Char(36)
+  lead        Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  scheduledAt DateTime @db.DateTime(3)
+  hasTime     Boolean
+  completedAt DateTime? @db.DateTime(3)
+  notes       String @db.Text
+  version     Int @default(1)
+
+  @@index([completedAt, scheduledAt])
+}
